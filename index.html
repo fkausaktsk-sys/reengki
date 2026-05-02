@@ -1418,6 +1418,41 @@
       scroll-margin-top: 104px;
     }
   }
+
+  /* bottom-cta 캐릭터 – 버튼 위 중앙 발 걸친 스타일 */
+  .bottom-cta {
+    position: relative;
+    overflow: visible;
+  }
+
+  .btn-white-wrap {
+    position: relative;
+    display: inline-block;
+    margin-top: 70px; /* 캐릭터 공간 확보 */
+  }
+
+  .bottom-cta-character {
+    position: absolute;
+    /* 버튼 상단 기준, 발 하단 18px이 버튼에 걸치게 */
+    bottom: calc(100% - 18px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+  }
+
+  @media (max-width: 600px) {
+    .btn-white-wrap {
+      margin-top: 60px;
+      width: 100%;
+    }
+    .bottom-cta-character {
+      width: 100px;
+      bottom: calc(100% - 14px);
+    }
+  }
 </style>
 </head>
 <body>
@@ -1899,7 +1934,10 @@
   <div class="bottom-cta-inner">
     <h2>우리 아이의 영어 자신감,<br>링키에서 시작해요!</h2>
     <p>5~9세 맞춤 영어교육으로<br>아이가 영어를 즐기게 됩니다</p>
-    <a href="tel:010-5865-2900" class="btn-white">📞 지금 바로 상담 신청</a>
+    <div class="btn-white-wrap">
+      <img class="bottom-cta-character" src="brand-reengki.png" alt="" aria-hidden="true" />
+      <a href="tel:010-5865-2900" class="btn-white">지금 바로 상담 신청</a>
+    </div>
     <div class="phone-number">010-5865-2900</div>
   </div>
 </div>
