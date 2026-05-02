@@ -69,15 +69,7 @@
     flex-shrink: 0;
   }
 
-  .nav-logo .quokka {
-    width: 36px; height: 36px;
-    background: var(--pink-light);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    border: 1.5px solid var(--pink-mid);
-  }
-
+  
   .nav-logo span {
     font-family: 'Nunito', sans-serif;
     font-weight: 900;
@@ -204,8 +196,8 @@
   ────────────────────────────── */
   .hero {
     margin-top: 62px;
-    background: var(--white);
-    padding: 80px 28px 64px;
+    background: #fffaef80;
+    padding: 20px 28px;
     position: relative;
     overflow: hidden;
   }
@@ -216,7 +208,7 @@
     position: absolute;
     top: -100px; right: -100px;
     width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(244,96,122,0.08) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(244,96,122,0.04) 0%, transparent 65%);
     border-radius: 50%;
     pointer-events: none;
   }
@@ -276,7 +268,7 @@
     display: flex;
     gap: 10px;
     animation: fadeInUp 0.5s 0.3s ease both;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .btn-primary {
@@ -323,11 +315,58 @@
     transform: translateY(-2px);
   }
 
+  /* Hero 우측 심볼 이미지 */
   .hero-mascot {
-    font-size: clamp(72px, 9vw, 120px);
-    animation: float 3.5s ease-in-out infinite;
-    user-select: none;
-    filter: drop-shadow(0 8px 20px rgba(0,0,0,0.08));
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .hero-symbol-wrap {
+    position: relative;
+    width: clamp(360px, 42vw, 520px);
+    height: clamp(360px, 42vw, 520px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 뒤쪽 대형 핑크 후광 */
+  .hero-symbol-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    background: radial-gradient(circle,
+      rgba(244,96,122,0.065) 0%,
+      rgba(244,96,122,0.03) 45%,
+      transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse-glow 3.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { transform: scale(1);   opacity: 1; }
+    50%       { transform: scale(1.06); opacity: 0.7; }
+  }
+
+  .hero-symbol-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* 살짝 핑크 틴트 드롭섀도우 */
+    filter: drop-shadow(0 16px 48px rgba(244,96,122,0.22))
+            drop-shadow(0 4px 16px rgba(244,96,122,0.12));
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
 
   /* ──────────────────────────────
@@ -337,18 +376,34 @@
     background: var(--gray-bg);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+    overflow: hidden;
   }
 
   .features-strip-inner {
-    max-width: var(--container);
-    margin: 0 auto;
     display: flex;
-    padding: 16px 28px;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    padding: 16px 0;
+    gap: 0;
+    overflow: hidden;
+    width: 100%;
   }
-  .features-strip-inner::-webkit-scrollbar { display: none; }
+
+  .marquee-track {
+    display: flex;
+    gap: 8px;
+    animation: marquee-scroll 22s linear infinite;
+    will-change: transform;
+    flex-shrink: 0;
+    padding: 0 4px;
+  }
+
+  .features-strip:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 
   .feat-chip {
     flex-shrink: 0;
@@ -386,6 +441,10 @@
   }
   section.alt-bg {
     background: var(--sky);
+  }
+
+  section.yellow-bg {
+    background: #fffaef80;
   }
 
   .section-inner {
@@ -635,9 +694,65 @@
   .curr-body ul li.teal::before { color: var(--teal); }
   .curr-body ul li.warm::before { color: var(--yellow); }
 
-  /* ──────────────────────────────
+ /* ──────────────────────────────
      ENVIRONMENT
   ────────────────────────────── */
+  .env-photo-wrap {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  .env-photo-wrap img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    object-position: center 90%;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .env-photo-wrap:hover img {
+    transform: scale(1.02);
+  }
+
+  .env-photo-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+
+  .env-photo-badge span {
+    color: var(--pink);
+  }
+
+  @media (max-width: 600px) {
+    .env-photo-wrap img { height: 240px; }
+    .env-photo-badge {
+      bottom: auto;
+      top: 12px;
+      left: 12px;
+      padding: 6px 10px;
+      font-size: 11px;
+      gap: 5px;
+      border-radius: 8px;
+    }
+  }
+
   .env-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -684,6 +799,7 @@
     line-height: 1.68;
     color: var(--text-mid);
   }
+
 
   /* ──────────────────────────────
      SCHEDULE
@@ -1044,13 +1160,197 @@
 
   @media (max-width: 600px) {
     section             { padding: 56px 18px; }
-    .hero               { padding: 80px 18px 48px; }
-    .hero-inner         { grid-template-columns: 1fr; gap: 0; }
-    .hero-mascot        { display: none; }
+    .hero               { padding: 20px 18px 40px; }
+    .hero-inner         { grid-template-columns: 1fr; gap: 0; justify-items: center; text-align: center; }
+    .hero-cta           { justify-content: center; width: 100%; gap: 10px; }
+    .hero-mascot        { order: -1; margin-bottom: -36px; margin-top: -28px; }
+    .hero-symbol-wrap   { width: 260px; height: 260px; }
+    .hero-symbol-wrap::before {
+      background: radial-gradient(circle,
+        rgba(244,96,122,0.035) 0%,
+        rgba(244,96,122,0.015) 45%,
+        transparent 70%);
+    }
     .float-cta          { bottom: 14px; right: 12px; left: 12px; }
     .float-btn          { flex: 1; justify-content: center; }
     .btn-primary,
-    .btn-secondary      { flex: 1; justify-content: center; }
+    .btn-secondary      {
+      flex: 1;
+      justify-content: center;
+      text-align: center;
+      min-width: 0;
+      padding: 14px 8px;
+      font-size: 14px;
+    }
+    .gallery-item { width: 220px; height: 165px; }
+  }
+
+  /* ──────────────────────────────
+     GALLERY – 무한 롤링
+  ────────────────────────────── */
+  #gallery .section-inner {
+    margin-bottom: 32px;
+  }
+
+  #gallery {
+    padding-bottom: 60px;
+    overflow: hidden;
+  }
+
+  .gallery-rolling-wrap {
+    overflow: hidden;
+    position: relative;
+    margin: 0 -28px;
+  }
+
+  /* 좌우 페이드 마스크 */
+  .gallery-rolling-wrap::before,
+  .gallery-rolling-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .gallery-rolling-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, var(--white), transparent);
+  }
+  .gallery-rolling-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, var(--white), transparent);
+  }
+
+  .gallery-track {
+    display: flex;
+    gap: 14px;
+    width: max-content;
+    animation: galleryRoll 30s linear infinite;
+    padding: 4px 28px 12px;
+  }
+
+  .gallery-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes galleryRoll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--gray-bg);
+    flex-shrink: 0;
+    width: 280px;
+    height: 210px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.14);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+  }
+
+  .gallery-item:hover img { transform: scale(1.06); }
+
+  .gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,26,46,0.55) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 14px 16px;
+  }
+
+  .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+  .gallery-item-overlay span {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  /* 라이트박스 */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(10,10,20,0.92);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: var(--radius);
+    object-fit: contain;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.25s ease both;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: white;
+    font-size: 22px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+  .lightbox-nav.prev { left: 16px; }
+  .lightbox-nav.next { right: 16px; }
+
+  .lightbox-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 600;
   }
 </style>
 </head>
@@ -1060,13 +1360,13 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <div class="quokka">🦫</div>
-      <span>ReengKi 율현에듀</span>
+      <span>ReengKi <em style="font-style:normal; color:#1ecad3;">율현에듀</em></span>
     </a>
     <div class="nav-links">
       <a href="#about">학원 소개</a>
       <a href="#curriculum">커리큘럼</a>
       <a href="#environment">교육 환경</a>
+      <a href="#gallery">갤러리</a>
       <a href="#schedule">시간표</a>
       <a href="#location">오시는 길</a>
     </div>
@@ -1084,6 +1384,7 @@
   <a href="#about" onclick="closeMobile()">학원 소개</a>
   <a href="#curriculum" onclick="closeMobile()">커리큘럼</a>
   <a href="#environment" onclick="closeMobile()">교육 환경</a>
+  <a href="#gallery" onclick="closeMobile()">갤러리</a>
   <a href="#schedule" onclick="closeMobile()">시간표</a>
   <a href="#location" onclick="closeMobile()">오시는 길</a>
   <a href="tel:010-5865-2900" class="mobile-call">📞 010-5865-2900 상담 전화</a>
@@ -1114,19 +1415,37 @@
         <a href="https://blog.naver.com/juliebong0113" target="_blank" class="btn-secondary">📖 블로그 보기</a>
       </div>
     </div>
-    <div class="hero-mascot">🦫</div>
+    <div class="hero-mascot">
+      <div class="hero-symbol-wrap">
+        <img
+          class="hero-symbol-img"
+          src="https://admin.reengki.com/img/brand/brand-symbol.png"
+          alt="링키영어 브랜드 심볼"
+        />
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- FEATURES STRIP -->
 <div class="features-strip">
   <div class="features-strip-inner">
-    <div class="feat-chip"><span class="dot"></span>소규모 집중수업</div>
-    <div class="feat-chip green"><span class="dot"></span>수준별 맞춤지도</div>
-    <div class="feat-chip yellow"><span class="dot"></span>맞춤형 피드백</div>
-    <div class="feat-chip"><span class="dot"></span>재미있는 Funducation</div>
-    <div class="feat-chip green"><span class="dot"></span>전자칠판 활용</div>
-    <div class="feat-chip yellow"><span class="dot"></span>5~9세 맞춤 커리큘럼</div>
+    <div class="marquee-track" aria-hidden="false">
+      <div class="feat-chip"><span class="dot"></span>소규모 집중수업</div>
+      <div class="feat-chip green"><span class="dot"></span>수준별 맞춤지도</div>
+      <div class="feat-chip yellow"><span class="dot"></span>맞춤형 피드백</div>
+      <div class="feat-chip"><span class="dot"></span>재미있는 Funducation</div>
+      <div class="feat-chip green"><span class="dot"></span>전자칠판 활용</div>
+      <div class="feat-chip yellow"><span class="dot"></span>5~9세 맞춤 커리큘럼</div>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="feat-chip"><span class="dot"></span>소규모 집중수업</div>
+      <div class="feat-chip green"><span class="dot"></span>수준별 맞춤지도</div>
+      <div class="feat-chip yellow"><span class="dot"></span>맞춤형 피드백</div>
+      <div class="feat-chip"><span class="dot"></span>재미있는 Funducation</div>
+      <div class="feat-chip green"><span class="dot"></span>전자칠판 활용</div>
+      <div class="feat-chip yellow"><span class="dot"></span>5~9세 맞춤 커리큘럼</div>
+    </div>
   </div>
 </div>
 
@@ -1267,6 +1586,13 @@
     <h2 class="section-title">아이들을 위한<br>최적의 공간</h2>
     <p class="section-desc">따뜻하고 안정된 환경에서 자연스럽게 영어 능력을 향상시킵니다.</p>
 
+    <div class="env-photo-wrap fade-in">
+      <img src="pic1.png" alt="링키영어 율현에듀 교실 전경" />
+      <div class="env-photo-badge">
+        📍 <span>링키영어 율현에듀점</span> &nbsp;·&nbsp; 실제 교실 사진
+      </div>
+    </div>
+
     <div class="env-grid fade-in">
       <div class="env-card">
         <div class="env-icon-wrap">🎨</div>
@@ -1307,8 +1633,71 @@
   </div>
 </section>
 
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-eyebrow">갤러리</div>
+    <h2 class="section-title">학원 사진<br>갤러리</h2>
+    <p class="section-desc">링키영어 율현에듀점의 생생한 공간과 수업 현장을 만나보세요.</p>
+  </div>
+
+  <!-- 롤링 트랙: section-inner 밖에 배치해 full-width -->
+  <div class="gallery-rolling-wrap fade-in">
+    <div class="gallery-track" id="galleryTrack">
+      <!-- 원본 아이템 10개 -->
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="pic1.png" alt="학원 사진 1" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="pic2.png" alt="학원 사진 2" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="pic3.png" alt="학원 사진 3" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <img src="pic4.png" alt="학원 사진 4" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <img src="pic5.png" alt="학원 사진 5" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(5)">
+        <img src="pic6.png" alt="학원 사진 6" />
+      </div>
+      <!-- 무한 루프를 위한 복제본 10개 (JS로도 추가) -->
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="pic1.png" alt="학원 사진 1" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="pic2.png" alt="학원 사진 2" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="pic3.png" alt="학원 사진 3" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <img src="pic4.png" alt="학원 사진 4" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <img src="pic5.png" alt="학원 사진 5" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox(5)">
+        <img src="pic6.png" alt="학원 사진 6" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav prev" onclick="event.stopPropagation(); moveLightbox(-1)">‹</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+  <button class="lightbox-nav next" onclick="event.stopPropagation(); moveLightbox(1)">›</button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
 <!-- SCHEDULE -->
-<section id="schedule">
+<section id="schedule" class="alt-bg">
   <div class="section-inner">
     <div class="section-eyebrow teal">운영 시간</div>
     <h2 class="section-title">수업 일정 &amp;<br>운영 시간</h2>
@@ -1370,7 +1759,7 @@
 </section>
 
 <!-- LOCATION -->
-<section id="location" class="alt-bg">
+<section id="location" class="yellow-bg">
   <div class="section-inner">
     <div class="section-eyebrow">오시는 길</div>
     <h2 class="section-title">찾아오시는 방법</h2>
@@ -1441,7 +1830,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">🦫 ReengKi 율현에듀점</div>
+    <div class="footer-logo">ReengKi 율현에듀점</div>
     <strong>링키영어 율현에듀점 (ReengKi English)</strong><br>
     서울 강남구 밤고개로 227 훼미리타운 B동 102호<br>
     교습소 등록번호: 제14078호 &nbsp;|&nbsp; 원장: Julie(김주애) &nbsp;|&nbsp; ☎ 010-5865-2900<br><br>
@@ -1462,7 +1851,7 @@
     entries.forEach(e => {
       if (e.isIntersecting) e.target.classList.add('visible');
     });
-  }, { threshold: 0.08 });
+  }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
   fadeEls.forEach(el => observer.observe(el));
 
   // Float CTA
@@ -1499,6 +1888,45 @@
     if (!hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
       mobileMenu.classList.remove('open');
     }
+  });
+
+  // Gallery lightbox
+  const galleryImgs = Array.from(document.querySelectorAll('.gallery-item img'));
+  const lightbox    = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  let currentIdx = 0;
+
+  function openLightbox(idx) {
+    currentIdx = idx;
+    lightboxImg.src = galleryImgs[idx].src;
+    lightboxImg.alt = galleryImgs[idx].alt;
+    lightboxCounter.textContent = (idx + 1) + ' / ' + galleryImgs.length;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeLightboxOutside(e) {
+    if (e.target === lightbox) closeLightbox();
+  }
+
+  function moveLightbox(dir) {
+    currentIdx = (currentIdx + dir + galleryImgs.length) % galleryImgs.length;
+    lightboxImg.src = galleryImgs[currentIdx].src;
+    lightboxImg.alt = galleryImgs[currentIdx].alt;
+    lightboxCounter.textContent = (currentIdx + 1) + ' / ' + galleryImgs.length;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowRight') moveLightbox(1);
+    if (e.key === 'ArrowLeft')  moveLightbox(-1);
   });
 </script>
 </body>
